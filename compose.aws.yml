@@ -20,7 +20,8 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      MONGODB_URI: mongodb://mongodb:mongodbpassword@mongodb:27017/taskhub?authSource=admin
+    env_file:
+      - ./backend/.env
     depends_on:
       - mongodb
     restart: unless-stopped

@@ -21,8 +21,9 @@ services:
     depends_on:
      - mongo
 
-    environment:
-        MONGODB_URI: mongodb://mongodb:mongodbpassword@mongo:27017/taskhub?authSource=admin
+    env_file:
+      - ./backend/.env
+        
 
 
   frontend:
