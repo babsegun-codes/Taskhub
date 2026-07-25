@@ -1,0 +1,49 @@
+services:
+  frontend:
+    image: samakn/taskhub:frontend-v1
+    container_name: taskhub-frontend
+    ports:
+      - "3005:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://32.197.106.47:4000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - taskhub-network
+
+  backend:
+    image: samakn/taskhub:backend-v1
+    container_name: taskhub-backend
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      MONGODB_URI: mongodb://mongodb:mongodbpassword@mongodb:27017/taskhub?authSource=admin
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - taskhub-network
+
+  mongodb:
+    image: mongo:7
+    container_name: taskhub-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodbpassword
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+    networks:
+      - taskhub-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  taskhub-network:
+    driver: bridge
