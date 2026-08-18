@@ -1,0 +1,39 @@
+name: Build and deploy
+on:
+    push
+jobs:
+        build-backend:
+            runs-on: ubuntu-latest
+            steps:
+                - name: Checkout code
+                  uses: actions/checkout@v6
+
+                - name: install dependencies
+                  working-directory: ./backend
+                  run: npm install
+
+                - name: Lint
+                  working-directory: ./backend
+                  run: npm run lint
+                  continue-on-error: true
+
+
+                - name: Test
+                  working-directory: ./backend
+                  run: npm test
+                  continue-on-error: true
+
+                - name: Set up QEMU
+                  uses: docker/setup-qemu-action@v4
+
+                - name: Set up Docker Buildx
+                  uses: docker/setup-buildx-action@v4
+
+                - name: Build and push
+                  uses: docker/build-push-action@v7
+                  with:
+                    context: ./backend
+                    file: ./backend/Dockerfile
+                    push: false
+                    tags: taskhub-backend:latest
+                  
