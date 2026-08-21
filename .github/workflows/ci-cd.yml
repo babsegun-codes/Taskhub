@@ -68,7 +68,7 @@ jobs:
                   uses: actions/checkout@v6
 
                 - name: SSH and update backend
-                  uses: appleboy/ssh-action@v0.1.6
+                  uses: appleboy/ssh-action@v1.0.3
                   with:
                     host: ${{ secrets.PUBLIC_IP_ADRRESS}}
                     username: ubuntu
