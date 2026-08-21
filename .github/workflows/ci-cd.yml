@@ -84,6 +84,6 @@ jobs:
 
                         docker stop backend || true
                         docker rm backend || true
-                        docker run -d --name backend -p 3000:3000 ${IMAGE}
+                        docker run -d --name backend -p 4000:4000 ${IMAGE}
 
                   
