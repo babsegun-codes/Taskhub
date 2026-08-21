@@ -71,13 +71,13 @@ jobs:
                   uses: appleboy/ssh-action@v0.1.6
                   with:
                     host: ${{ secrets.PUBLIC_IP_ADRRESS}}
-                    username: u
+                    username: ubuntu
                     key: ${{ secrets.SSH_PRIVATE_KEY }}
                     script: |
                         #Authenicate with Dockerfile
                         echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
                        
-                        #Pull the latest image and run it
+                      
                         
                         docker pull samakn/backend-v1:${{ needs.build-backend.outputs.sha }}
                         export IMAGE=samakn/backend-v1:${{ needs.build-backend.outputs.sha }}
