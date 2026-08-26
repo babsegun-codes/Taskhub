@@ -136,4 +136,32 @@ jobs:
                         docker rm backend || true
                         docker run -d --name backend -p 4000:4000 ${IMAGE}
 
+
+        deploy-frontend:
+            needs: build-frontend
+            if: github.event_name == 'push'
+            runs-on: ubuntu-latest
+            steps:
+                - name: Checkout code
+                  uses: actions/checkout@v6   
+
+                - name: SSH and update frontend
+                  uses: appleboy/ssh-action@v1.0.3
+                  with:
+                    host: ${{ secrets.PUBLIC_IP_ADRRESS}}
+                    username: ubuntu
+                    key: ${{ secrets.SSH_PRIVATE_KEY }}
+                    script: |
+                        #Authenicate with Dockerfile
+                        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+                 
+
+                        docker pull samakn/frontend-v1:${{ needs.build-frontend.outputs.sha }}
+                        export IMAGE=samakn/frontend-v1:${{ needs.build-frontend.outputs.sha }}
+
+                        docker stop frontend || true
+                        docker rm frontend || true
+                        docker run -d --name frontend -p 3000:3000 ${IMAGE}
+
+
                   
