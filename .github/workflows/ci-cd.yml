@@ -134,7 +134,7 @@ jobs:
 
                         docker stop backend || true
                         docker rm backend || true
-                        docker run -d --name backend -p 4000:4000 ${IMAGE}
+                        docker run -d --name backend -p 3001:3001 ${IMAGE}
 
 
         deploy-frontend:
